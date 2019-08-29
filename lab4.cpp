@@ -48,11 +48,20 @@ using namespace __gnu_pbds;
 
 #define oset tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
 #define osetlli tree<lli, null_type, less<lli>, rb_tree_tag, tree_order_statistics_node_update>
+//member functions :
+//1. order_of_key(k) : number of elements strictly lesser than k
+//2. find_by_order(k) : k-th element in the set
 #define ofk order_of_key
 #define fbo find_by_order
 
 using namespace std;
 
+int isoperator(string c)
+{
+    if (c == "^" || c == "/" || c == "*" || c == "+" || c == "-" || c == "(")
+        return 1;
+    return 0;
+}
 int inpre(string c)
 {
     if (c == "^")
@@ -76,8 +85,10 @@ vector<string> stov(string s)
 {
     int n = s.si;
     vector<string> v;
+    int flag = 0, f = 0;
     for (int i = 0; i < n; i++)
     {
+        f = 0;
         string temp = "";
         if ((s[i] >= '0' && s[i] <= '9'))
         {
@@ -93,7 +104,33 @@ vector<string> stov(string s)
         {
             temp += s[i];
         }
-        v.pb(temp);
+        if (temp == "-")
+        {
+            if (v.empty())
+            {
+                v.pb("(");
+                v.pb("0");
+                flag = 1;
+            }
+            else
+            {
+                if (isoperator(v.back()))
+                {
+                    v.pb("(");
+                    v.pb("0");
+                    flag = 1;
+                }
+            }
+        }
+        if (flag == 1 && temp != "-")
+        {
+            v.pb(temp);
+            v.pb(")");
+            flag = 0;
+            f = 1;
+        }
+        if (f != 1)
+            v.pb(temp);
     }
     return v;
 }
@@ -234,4 +271,4 @@ int main()
         }
     }
     return 0;
-}
+} 
