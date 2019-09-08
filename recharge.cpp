@@ -239,6 +239,7 @@ if(i==2)
 {
 max=max_recharge(root,max);
 s.append(std::to_string(max));
+s.append("\n");
 }
 }
 cout<<s;
